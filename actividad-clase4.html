@@ -17,7 +17,7 @@ body {
   background: white;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(10, 9, 9, 0.1);
 }
 
 h1, h2 {
@@ -39,6 +39,7 @@ label {
 .line {
   border-bottom: 1px solid #ccc;
   margin: 8px 0 16px 0;
+  padding-bottom: 4px;
 }
 
 table {
@@ -79,27 +80,41 @@ th {
 <h1>🌐 Actividad Clase 4</h1>
 <h2>Comunicación entre Servicios + REST + Eventos + Service Discovery</h2>
 
-<p><strong>Equipo:</strong> ____________________</p>
-<p><strong>Proyecto:</strong> ____________________</p>
+<p><strong>Equipo:</strong> Brayan Bambague Gallardo &nbsp;|&nbsp; Marvin Ronaldo Meneses &nbsp;|&nbsp; Yordi &nbsp;|&nbsp; Jhonathan</p>
+<p><strong>Proyecto:</strong> Gestor De Tareas</p>
 
 <div class="section">
 <h2>🪜 1. Interacciones entre Servicios</h2>
 
 <p><strong>Interacción 1</strong></p>
 <label>Servicio que envía:</label>
-<div class="line"></div>
+<div class="line">Servicio de Usuarios (Autenticación)</div>
 <label>Servicio que recibe:</label>
-<div class="line"></div>
+<div class="line">Servicio de Tareas</div>
 <label>Información enviada:</label>
-<div class="line"></div>
+<div class="line"> tarea asignada</div>
 <label>¿Qué sucede si no responde?</label>
-<div class="line"></div>
+<div class="line">El Servicio de Tareas rechaza la solicitud con error 401 (no autorizado) y no permite la operación</div>
 
 <p><strong>Interacción 2</strong></p>
-<div class="line"></div>
+<label>Servicio que envía:</label>
+<div class="line">Servicio de Tareas</div>
+<label>Servicio que recibe:</label>
+<div class="line">Servicio de Notificaciones</div>
+<label>Información enviada:</label>
+<div class="line">Evento "tarea_asignada" fecha límite</div>
+<label>¿Qué sucede si no responde?</label>
+<div class="line">La tarea se guarda igual; la notificación se reintenta luego (no bloquea el flujo principal)</div>
 
 <p><strong>Interacción 3</strong></p>
-<div class="line"></div>
+<label>Servicio que envía:</label>
+<div class="line">Servicio de Tareas</div>
+<label>Servicio que recibe:</label>
+<div class="line">Servicio de Reportes / Dashboard</div>
+<label>Información enviada:</label>
+<div class="line">Evento "tarea_completada" </div>
+<label>¿Qué sucede si no responde?</label>
+<div class="line">Los reportes quedan desactualizados temporalmente; el sistema de tareas sigue operando con normalidad</div>
 </div>
 
 <div class="section">
@@ -113,22 +128,22 @@ th {
 <th>¿Por qué?</th>
 </tr>
 <tr>
-<td>1</td>
+<td>1 · Usuarios Tareas</td>
+<td>✓</td>
 <td></td>
-<td></td>
-<td></td>
+<td>Se necesita respuesta inmediata para saber si el usuario tiene permiso antes de continuar con la operación.</td>
 </tr>
 <tr>
-<td>2</td>
+<td>2 · Tareas  Notificaciones</td>
 <td></td>
-<td></td>
-<td></td>
+<td>✓</td>
+<td>La notificación no es crítica para guardar la tarea. Con un evento se desacopla el servicio y un fallo en notificaciones no afecta el guardado.</td>
 </tr>
 <tr>
-<td>3</td>
+<td>3 · Tareas  Reportes</td>
 <td></td>
-<td></td>
-<td></td>
+<td>✓</td>
+<td>Los reportes se actualizan en segundo plano. No es necesario esperar confirmación del servicio de reportes para considerar la tarea completada.</td>
 </tr>
 </table>
 </div>
@@ -144,61 +159,76 @@ th {
 <th>Justificación</th>
 </tr>
 <tr>
-<td>1</td>
+<td>1 · Validación de usuario</td>
+<td>✓</td>
 <td></td>
-<td></td>
-<td></td>
+<td>El servicio de tareas debe esperar la respuesta del servicio de autenticación para saber si puede procesar o rechazar la solicitud.</td>
 </tr>
 <tr>
-<td>2</td>
+<td>2 · Notificación de tarea asignada</td>
 <td></td>
-<td></td>
-<td></td>
+<td>✓</td>
+<td>El usuario recibe confirmación de asignación de inmediato. El envío de la notificación ocurre en segundo plano sin bloquear al cliente.</td>
 </tr>
 <tr>
-<td>3</td>
+<td>3 · Actualización de reportes</td>
 <td></td>
-<td></td>
-<td></td>
+<td>✓</td>
+<td>Los dashboards se actualizan eventualmente. No es necesario esperar; el usuario ya recibió confirmación de que la tarea fue completada.</td>
 </tr>
 </table>
 </div>
 
 <div class="section">
 <h2>🪜 4. Eventos Importantes del Sistema</h2>
-1️⃣ ______________________________________<br><br>
-2️⃣ ______________________________________<br><br>
-3️⃣ ______________________________________
+1️⃣ <strong>tarea_creada</strong> — Se emite cuando un usuario crea una nueva tarea. Contiene: ID de tarea, título, proyecto, usuario creador y fecha límite. Lo consumen: Notificaciones y Reportes.<br><br>
+2️⃣ <strong>tarea_asignada</strong> — Se emite cuando una tarea es asignada a un usuario. Contiene: ID de tarea, ID del usuario asignado y prioridad. Lo consume: Notificaciones (para avisar al usuario asignado).<br><br>
+3️⃣ <strong>tarea_completada</strong> — Se emite cuando un usuario marca una tarea como completada. Contiene: ID de tarea, ID de usuario, timestamp y proyecto. Lo consumen: Reportes/Dashboard y Notificaciones.
 </div>
 
 <div class="section">
 <h2>🪜 5. Análisis de Fallos</h2>
 <label>Servicio más crítico:</label>
-<div class="line"></div>
+<div class="line">Servicio de Usuarios / Autenticación</div>
 <label>¿Qué pasaría si falla?</label>
-<div class="line"></div>
+<div class="line">Ningún usuario podría autenticarse. El Servicio de Tareas rechazaría todas las operaciones (crear, editar, completar), bloqueando completamente la aplicación.</div>
 <label>¿El sistema debe detenerse o continuar?</label>
-<div class="line"></div>
+<div class="line">Continuar parcialmente: operaciones de lectura con sesión en caché pueden mantenerse. Las operaciones que requieran nueva autenticación deben detenerse por seguridad.</div>
 <label>¿Cómo podrían manejar este fallo?</label>
-<div class="line"></div>
+<div class="line">Implementar Circuit Breaker para detectar fallos. Usar caché de tokens JWT válidos para peticiones recientes. Tener instancias redundantes (réplicas) del servicio de autenticación con balanceo de carga.</div>
 </div>
 
 <div class="section">
 <h2>🪜 6. Service Discovery</h2>
 <label>¿Qué problema ocurre si cambia la IP de un servicio?</label>
-<div class="line"></div>
+<div class="line">Todos los servicios que apuntan a esa IP fija dejarían de comunicarse. Por ejemplo, si el Servicio de Tareas tiene hardcodeada la IP del Servicio de Notificaciones y esta cambia, las notificaciones dejan de enviarse aunque el servicio esté funcionando.</div>
 <label>¿Cómo sabría un servicio dónde encontrar otro?</label>
-<div class="line"></div>
+<div class="line">Con un Service Discovery (como Consul o Eureka), cada servicio se registra automáticamente al iniciarse con su nombre y dirección actual. Cuando Tareas necesita contactar a Notificaciones, consulta el registro para obtener la dirección actualizada.</div>
 <label>¿Por qué sería útil Service Discovery?</label>
-<div class="line"></div>
+<div class="line">Permite que los servicios escalen horizontalmente, se reinicien o cambien de IP sin romper la comunicación. El sistema es más resiliente y no requiere configuración manual de direcciones.</div>
 <label>¿Dónde lo aplicarían en su sistema?</label>
-<div class="line"></div>
+<div class="line">Entre todos los servicios: API Gateway → Usuarios, API Gateway → Tareas, y Tareas → Notificaciones. Especialmente útil en despliegue con contenedores (Docker/Kubernetes) donde las IPs cambian constantemente.</div>
 </div>
 
 <div class="section">
 <h2>🪜 7. Mini Diagrama</h2>
 <p>Dibujen:</p>
 <p><strong>Servicio A → Service Discovery → Servicio B</strong></p>
+<br>
+<p style="text-align:center; font-family: monospace; font-size: 1rem; background:#f4f6f8; padding:20px; border-radius:8px;">
+  Servicio de Tareas
+  &nbsp;&nbsp;→&nbsp;&nbsp;
+  🔍 Service Discovery (Consul/Eureka)
+  &nbsp;&nbsp;→&nbsp;&nbsp;
+  Servicio de Notificaciones
+  <br><br>
+  <small style="color:#666;">
+    [1] Notificaciones se registra en Discovery al iniciar con su IP actual.<br>
+    [2] Tareas consulta al Discovery: "¿dónde está Notificaciones?"<br>
+    [3] Discovery responde con la IP/puerto actual.<br>
+    [4] Tareas se comunica directamente con Notificaciones usando esa dirección.
+  </small>
+</p>
 </div>
 
 <div class="note">
@@ -212,10 +242,10 @@ Service Discovery → permite encontrar servicios automáticamente
 
 <div class="footer">
 🎤 El equipo debe poder explicar:<br>
-✔ una interacción importante<br>
-✔ un evento del sistema<br>
-✔ qué pasa si un servicio falla<br>
-✔ dónde usarían Service Discovery
+✔ una interacción importante: Usuarios → Tareas (REST síncrono para validar token JWT)<br>
+✔ un evento del sistema: tarea_completada → consume Reportes y Notificaciones de forma asíncrona<br>
+✔ qué pasa si un servicio falla: Auth falla → Circuit Breaker + caché de tokens + réplicas<br>
+✔ dónde usarían Service Discovery: entre todos los microservicios, especialmente en contenedores
 </div>
 
 </div>
