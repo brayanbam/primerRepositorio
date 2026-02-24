@@ -77,179 +77,136 @@ th {
 
 <div class="container">
 
-<h1>🌐 Actividad Clase 4</h1>
-<h2>Comunicación entre Servicios + REST + Eventos + Service Discovery</h2>
+<h1>🌐 TaskAPI - Sistema de Gestión de Tareas</h1>
+<h2>Comunicación REST entre Microservicios</h2>
 
-<p><strong>Equipo:</strong> Brayan Bambague Gallardo &nbsp;|&nbsp; Marvin Ronaldo Meneses &nbsp;|&nbsp; Yordi &nbsp;|&nbsp; Jhonathan</p>
-<p><strong>Proyecto:</strong> Gestor De Tareas</p>
+<p><strong>Equipo:</strong> Brayan Bambague Gallardo &nbsp;|&nbsp; Marbin Ronaldo Meneses &nbsp;|&nbsp; Yordi &nbsp;|&nbsp; Jhonathan</p>
+<p><strong>Proyecto:</strong> TaskAPI</p>
 
 <div class="section">
-<h2>🪜 1. Interacciones entre Servicios</h2>
+<h2>🪜 1. Arquitectura del Sistema</h2>
 
-<p><strong>Interacción 1</strong></p>
-<label>Servicio que envía:</label>
-<div class="line">Servicio de Usuarios (Autenticación)</div>
-<label>Servicio que recibe:</label>
-<div class="line">Servicio de Tareas</div>
-<label>Información enviada:</label>
-<div class="line"> tarea asignada</div>
-<label>¿Qué sucede si no responde?</label>
-<div class="line">El Servicio de Tareas rechaza la solicitud con error 401 (no autorizado) y no permite la operación</div>
+<p>El sistema está compuesto por tres APIs independientes que se comunican mediante peticiones HTTP:</p>
 
-<p><strong>Interacción 2</strong></p>
-<label>Servicio que envía:</label>
-<div class="line">Servicio de Tareas</div>
-<label>Servicio que recibe:</label>
-<div class="line">Servicio de Notificaciones</div>
-<label>Información enviada:</label>
-<div class="line">Evento "tarea_asignada" fecha límite</div>
-<label>¿Qué sucede si no responde?</label>
-<div class="line">La tarea se guarda igual; la notificación se reintenta luego (no bloquea el flujo principal)</div>
+<ul>
+<li><strong>API de Usuarios</strong> → Gestiona registro y consulta de usuarios.</li>
+<li><strong>API de Tareas</strong> → Administra las tareas asociadas a cada usuario.</li>
+<li><strong>API de Notificaciones</strong> → Envía recordatorios automáticos vía Telegram.</li>
+</ul>
 
-<p><strong>Interacción 3</strong></p>
-<label>Servicio que envía:</label>
-<div class="line">Servicio de Tareas</div>
-<label>Servicio que recibe:</label>
-<div class="line">Servicio de Reportes / Dashboard</div>
-<label>Información enviada:</label>
-<div class="line">Evento "tarea_completada" </div>
-<label>¿Qué sucede si no responde?</label>
-<div class="line">Los reportes quedan desactualizados temporalmente; el sistema de tareas sigue operando con normalidad</div>
+<p>La comunicación entre servicios se realiza mediante REST (HTTP).</p>
 </div>
 
 <div class="section">
-<h2>🪜 2. REST o Eventos</h2>
+<h2>🪜 2. Flujo de Comunicación</h2>
+
+<p><strong>Flujo completo del sistema:</strong></p>
+
+<ol>
+<li>Un usuario se registra en la API de Usuarios (POST /usuarios).</li>
+<li>Se crea una tarea asociada al usuario (POST /tareas).</li>
+<li>El scheduler de la API de Notificaciones consulta periódicamente las tareas pendientes (GET /tareas).</li>
+<li>Por cada tarea pendiente, consulta la API de Usuarios para obtener el chat_id (GET /usuarios/&lt;id&gt;).</li>
+<li>Se envía la notificación al usuario mediante el Bot de Telegram.</li>
+</ol>
+
+</div>
+
+<div class="section">
+<h2>🪜 3. Comunicación entre APIs</h2>
 
 <table>
 <tr>
-<th>Interacción</th>
-<th>REST</th>
-<th>Evento</th>
-<th>¿Por qué?</th>
+<th>Origen</th>
+<th>Destino</th>
+<th>Tipo</th>
+<th>Descripción</th>
 </tr>
+
 <tr>
-<td>1 · Usuarios Tareas</td>
-<td>✓</td>
-<td></td>
-<td>Se necesita respuesta inmediata para saber si el usuario tiene permiso antes de continuar con la operación.</td>
+<td>API Notificaciones</td>
+<td>API Tareas</td>
+<td>REST - GET</td>
+<td>Solicita lista de tareas pendientes</td>
 </tr>
+
 <tr>
-<td>2 · Tareas  Notificaciones</td>
-<td></td>
-<td>✓</td>
-<td>La notificación no es crítica para guardar la tarea. Con un evento se desacopla el servicio y un fallo en notificaciones no afecta el guardado.</td>
+<td>API Notificaciones</td>
+<td>API Usuarios</td>
+<td>REST - GET</td>
+<td>Obtiene el chat_id del usuario</td>
 </tr>
+
 <tr>
-<td>3 · Tareas  Reportes</td>
-<td></td>
-<td>✓</td>
-<td>Los reportes se actualizan en segundo plano. No es necesario esperar confirmación del servicio de reportes para considerar la tarea completada.</td>
+<td>API Tareas</td>
+<td>API Usuarios</td>
+<td>REST</td>
+<td>Verifica que el usuario exista antes de asociar una tarea</td>
 </tr>
+
 </table>
 </div>
 
 <div class="section">
-<h2>🪜 3. Síncrono o Asíncrono</h2>
+<h2>🪜 4. Tipo de Comunicación</h2>
 
-<table>
-<tr>
-<th>Interacción</th>
-<th>Síncrono</th>
-<th>Asíncrono</th>
-<th>Justificación</th>
-</tr>
-<tr>
-<td>1 · Validación de usuario</td>
-<td>✓</td>
-<td></td>
-<td>El servicio de tareas debe esperar la respuesta del servicio de autenticación para saber si puede procesar o rechazar la solicitud.</td>
-</tr>
-<tr>
-<td>2 · Notificación de tarea asignada</td>
-<td></td>
-<td>✓</td>
-<td>El usuario recibe confirmación de asignación de inmediato. El envío de la notificación ocurre en segundo plano sin bloquear al cliente.</td>
-</tr>
-<tr>
-<td>3 · Actualización de reportes</td>
-<td></td>
-<td>✓</td>
-<td>Los dashboards se actualizan eventualmente. No es necesario esperar; el usuario ya recibió confirmación de que la tarea fue completada.</td>
-</tr>
-</table>
+<p><strong>Tipo:</strong> Síncrona (HTTP REST)</p>
+
+<p>Cada servicio espera la respuesta del otro antes de continuar. 
+Si la API de Usuarios no responde, la API de Tareas no puede asociar la tarea.
+Si la API de Tareas no responde, la API de Notificaciones no puede enviar recordatorios.</p>
+
 </div>
 
 <div class="section">
-<h2>🪜 4. Eventos Importantes del Sistema</h2>
-1️⃣ <strong>tarea_creada</strong> — Se emite cuando un usuario crea una nueva tarea. Contiene: ID de tarea, título, proyecto, usuario creador y fecha límite. Lo consumen: Notificaciones y Reportes.<br><br>
-2️⃣ <strong>tarea_asignada</strong> — Se emite cuando una tarea es asignada a un usuario. Contiene: ID de tarea, ID del usuario asignado y prioridad. Lo consume: Notificaciones (para avisar al usuario asignado).<br><br>
-3️⃣ <strong>tarea_completada</strong> — Se emite cuando un usuario marca una tarea como completada. Contiene: ID de tarea, ID de usuario, timestamp y proyecto. Lo consumen: Reportes/Dashboard y Notificaciones.
-</div>
+<h2>🪜 5. Análisis de Dependencias</h2>
 
-<div class="section">
-<h2>🪜 5. Análisis de Fallos</h2>
 <label>Servicio más crítico:</label>
-<div class="line">Servicio de Usuarios / Autenticación</div>
-<label>¿Qué pasaría si falla?</label>
-<div class="line">Ningún usuario podría autenticarse. El Servicio de Tareas rechazaría todas las operaciones (crear, editar, completar), bloqueando completamente la aplicación.</div>
-<label>¿El sistema debe detenerse o continuar?</label>
-<div class="line">Continuar parcialmente: operaciones de lectura con sesión en caché pueden mantenerse. Las operaciones que requieran nueva autenticación deben detenerse por seguridad.</div>
-<label>¿Cómo podrían manejar este fallo?</label>
-<div class="line">Implementar Circuit Breaker para detectar fallos. Usar caché de tokens JWT válidos para peticiones recientes. Tener instancias redundantes (réplicas) del servicio de autenticación con balanceo de carga.</div>
+<div class="line">API de Usuarios</div>
+
+<label>¿Por qué?</label>
+<div class="line">Sin usuarios registrados y sin chat_id no es posible asociar tareas ni enviar notificaciones.</div>
+
+<label>¿Qué ocurre si falla?</label>
+<div class="line">La creación de tareas fallaría y las notificaciones no podrían enviarse.</div>
+
+<label>Posible mejora:</label>
+<div class="line">Implementar manejo de errores, reintentos automáticos y balanceo de carga.</div>
+
 </div>
 
 <div class="section">
-<h2>🪜 6. Service Discovery</h2>
-<label>¿Qué problema ocurre si cambia la IP de un servicio?</label>
-<div class="line">Todos los servicios que apuntan a esa IP fija dejarían de comunicarse. Por ejemplo, si el Servicio de Tareas tiene hardcodeada la IP del Servicio de Notificaciones y esta cambia, las notificaciones dejan de enviarse aunque el servicio esté funcionando.</div>
-<label>¿Cómo sabría un servicio dónde encontrar otro?</label>
-<div class="line">Con un Service Discovery (como Consul o Eureka), cada servicio se registra automáticamente al iniciarse con su nombre y dirección actual. Cuando Tareas necesita contactar a Notificaciones, consulta el registro para obtener la dirección actualizada.</div>
-<label>¿Por qué sería útil Service Discovery?</label>
-<div class="line">Permite que los servicios escalen horizontalmente, se reinicien o cambien de IP sin romper la comunicación. El sistema es más resiliente y no requiere configuración manual de direcciones.</div>
-<label>¿Dónde lo aplicarían en su sistema?</label>
-<div class="line">Entre todos los servicios: API Gateway → Usuarios, API Gateway → Tareas, y Tareas → Notificaciones. Especialmente útil en despliegue con contenedores (Docker/Kubernetes) donde las IPs cambian constantemente.</div>
+<h2>🪜 6. Integración con Telegram</h2>
+
+<p>El sistema utiliza un Bot de Telegram para enviar notificaciones automáticas.</p>
+
+<ul>
+<li>El usuario debe interactuar previamente con el bot.</li>
+<li>Se obtiene el chat_id mediante el método getUpdates.</li>
+<li>El chat_id se almacena en la API de Usuarios.</li>
+<li>La API de Notificaciones usa ese chat_id para enviar recordatorios.</li>
+</ul>
+
+<p>El intervalo_notificacion define cada cuántos minutos se enviará el recordatorio.</p>
+
 </div>
 
 <div class="section">
-<h2>🪜 7. Mini Diagrama</h2>
-<p>Dibujen:</p>
-<p><strong>Servicio A → Service Discovery → Servicio B</strong></p>
-<br>
-<div style="text-align:center; margin-top:20px;">
-    <img src="imagen.png" 
-         alt="Mini Diagrama " 
-         style="max-width:100%; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-<p style="text-align:center; font-family: monospace; font-size: 1rem; background:#f4f6f8; padding:20px; border-radius:8px;">
-  Servicio de Tareas
-  &nbsp;&nbsp;→&nbsp;&nbsp;
-  🔍 Service Discovery (Consul/Eureka)
-  &nbsp;&nbsp;→&nbsp;&nbsp;
-  Servicio de Notificaciones
-  <br><br>
-  <small style="color:#666;">
-    [1] Notificaciones se registra en Discovery al iniciar con su IP actual.<br>
-    [2] Tareas consulta al Discovery: "¿dónde está Notificaciones?"<br>
-    [3] Discovery responde con la IP/puerto actual.<br>
-    [4] Tareas se comunica directamente con Notificaciones usando esa dirección.
-  </small>
-</p>
-</div>
+<h2>🪜 7. Propósito del Sistema</h2>
 
-<div class="note">
-💡 <strong>Ayuda rápida</strong><br>
-REST → petición directa<br>
-Evento → algo ocurrió<br>
-Síncrono → espera respuesta<br>
-Asíncrono → continúa sin esperar<br>
-Service Discovery → permite encontrar servicios automáticamente
+<ul>
+<li>Facilitar la gestión de tareas personales y académicas.</li>
+<li>Automatizar recordatorios sin intervención manual.</li>
+<li>Mantener trazabilidad completa sin eliminar registros.</li>
+</ul>
+
 </div>
 
 <div class="footer">
-🎤 El equipo debe poder explicar:<br>
-✔ una interacción importante: Usuarios → Tareas (REST síncrono para validar token JWT)<br>
-✔ un evento del sistema: tarea_completada → consume Reportes y Notificaciones de forma asíncrona<br>
-✔ qué pasa si un servicio falla: Auth falla → Circuit Breaker + caché de tokens + réplicas<br>
-✔ dónde usarían Service Discovery: entre todos los microservicios, especialmente en contenedores
+✔ Comunicación basada en REST<br>
+✔ Integración con Telegram<br>
+✔ Arquitectura de microservicios independientes<br>
+✔ Notificaciones automáticas mediante scheduler
 </div>
 
 </div>
