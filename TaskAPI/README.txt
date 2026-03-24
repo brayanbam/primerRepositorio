@@ -30,10 +30,7 @@ frontend → Interfaz de usuario (Vue + Nginx)
 
 
 🚀 Cómo ejecutar el proyecto
-1. Clonar el repositorio
-git clone <TU_REPOSITORIO>
-cd TaskAPI
-2. Ejecutar con Docker
+1. Ejecutar con Docker
 docker-compose up --build
 3. Acceder al sistema
 Frontend: http://localhost:8080
