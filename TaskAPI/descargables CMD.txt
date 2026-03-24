@@ -1,8 +1,0 @@
-instalar python
-py -m pip install npm
-py -m pip install node
-winget install OpenJS.NodeJS.LTS
-py -m pip install flask
-py -m pip install flask_cors
-py -m pip install jwt
-py -m pip install PyJWT
