@@ -1,0 +1,7 @@
+DATABASE = "tareas.db"
+PORT = 5002
+SECRET_KEY = "CAMBIA_ESTA_CLAVE_SUPER_SECRETA"
+
+# Token permanente solo para la API de notificaciones
+NOTIFICACIONES_TOKEN = "CLAVE_SECRETA_NOTIFICACIONES"
+
