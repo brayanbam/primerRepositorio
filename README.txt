@@ -1,18 +1,18 @@
-📌 Descripción del proyecto
+ Descripción del proyecto
 
 TaskAPI es un sistema de gestión de tareas basado en una arquitectura de microservicios. Permite a los usuarios registrarse, iniciar sesión, consultar sus tareas y recibir notificaciones automáticas cuando tienen tareas pendientes.
 
 El sistema está compuesto por cuatro servicios principales:
 
-🟦 Servicio de Usuarios: gestión de usuarios, autenticación y generación de tokens JWT.
-🟩 Servicio de Tareas: administración de tareas asociadas a usuarios.
-🟨 Servicio de Notificaciones: envío de recordatorios de tareas pendientes mediante Telegram.
-🟪 Frontend: interfaz web para interactuar con el sistema.
+Servicio de Usuarios: gestión de usuarios, autenticación y generación de tokens JWT.
+Servicio de Tareas: administración de tareas asociadas a usuarios.
+Servicio de Notificaciones: envío de recordatorios de tareas pendientes mediante Telegram.
+Frontend: interfaz web para interactuar con el sistema.
 
 Cada servicio se ejecuta en un contenedor Docker, lo que permite un despliegue sencillo y portable.
 
 
-📌 INSTRUCCIONES PARA EJECUCIÓN
+INSTRUCCIONES PARA EJECUCIÓN
 
 REQUISITOS
 Tener instalado:
@@ -24,7 +24,7 @@ Tener instalado:
     - Nginx
 
 
-📌 EJECUCIÓN DEL SISTEMA
+EJECUCIÓN DEL SISTEMA
 Clonar el repositorio:
     - git clone https://github.com/brayanbam/primerRepositorio/tree/ronal
     - cd TaskAPI
@@ -45,16 +45,16 @@ Detener el sistema:
     - docker-compose down
 
 
-📌 AUTENTICACIÓN
+AUTENTICACIÓN
 
 El sistema utiliza JWT (JSON Web Tokens) para proteger los endpoints.
 
 Para acceder a rutas protegidas debes incluir en los headers:
 Authorization: Bearer TU_TOKEN
 
-📌 DESCRIPCIÓN BÁSICA DE ENDPOINTS
+DESCRIPCIÓN BÁSICA DE ENDPOINTS
 
-🟦 SERVICIO DE USUARIOS
+SERVICIO DE USUARIOS
 
 Login:
     - POST /login
@@ -78,7 +78,7 @@ Obtener usuarios (solo admin):
 
 
 
-🟩 SERVICIO DE TAREAS
+SERVICIO DE TAREAS
 
 Obtener tareas:
     - GET /tareas
@@ -94,7 +94,7 @@ Completar tarea:
 
 
 
-🟨 SERVICIO DE NOTIFICACIONES
+SERVICIO DE NOTIFICACIONES
 
 Este servicio funciona automáticamente:
     - Consulta tareas pendientes
@@ -112,7 +112,7 @@ Solo el administrador puede crear tareas.
 Los usuarios solo pueden ver y completar sus propias tareas.
 
 
-📌 TECNOLOGIAS UTILICZADAS
+ TECNOLOGIAS UTILICZADAS
 Backend:
 Python
 Flask
@@ -126,5 +126,5 @@ Docker
 Docker Compose
 
 
-📌 Arquitectura
+Arquitectura
 El sistema sigue una arquitectura de microservicios, donde cada componente es independiente y se comunica mediante API REST.

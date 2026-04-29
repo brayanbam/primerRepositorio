@@ -4,9 +4,9 @@ import jwt
 from functools import wraps
 from config import SECRET_KEY, NOTIFICACIONES_TOKEN
 
-# ---------------------------
+
 # DECORADOR PARA TOKEN
-# ---------------------------
+
 def token_requerido(f):
     @wraps(f)
     def decorador(*args, **kwargs):
@@ -30,9 +30,9 @@ def token_requerido(f):
         return f(usuario, *args, **kwargs)
     return decorador
 
-# ---------------------------
+
 # DECORADOR PARA ADMIN
-# ---------------------------
+
 def admin_requerido(f):
     @wraps(f)
     def decorador(usuario_actual, *args, **kwargs):

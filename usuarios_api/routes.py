@@ -6,9 +6,9 @@ import datetime
 from functools import wraps
 from config import SECRET_KEY, NOTIFICACIONES_TOKEN
 
-# -------------------
+
 # DECORADOR JWT
-# -------------------
+
 def token_requerido(f):
     @wraps(f)
     def decorador(*args, **kwargs):
@@ -33,9 +33,9 @@ def token_requerido(f):
         return f(usuario, *args, **kwargs)
     return decorador
 
-# -------------------
+
 # DECORADOR ADMIN
-# -------------------
+
 def admin_requerido(f):
     @wraps(f)
     def decorador(usuario_actual, *args, **kwargs):
@@ -44,9 +44,9 @@ def admin_requerido(f):
         return f(usuario_actual, *args, **kwargs)
     return decorador
 
-# -------------------
+
 # RUTAS
-# -------------------
+
 def register_routes(app):
     # LOGIN
     @app.route('/login', methods=['POST'])

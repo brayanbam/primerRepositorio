@@ -16,14 +16,14 @@ def iniciar_scheduler():
         time.sleep(3)  # esperar a que APIs estén arriba
         programar_notificaciones()
         scheduler_iniciado = True
-        print("🕒 Scheduler iniciado correctamente (una sola instancia).")
+        print(" Scheduler iniciado correctamente (una sola instancia).")
 
 @app.route('/')
 def home():
-    return "Servidor de notificaciones activo ✅", 200
+    return "Servidor de notificaciones activo ", 200
 
 if __name__ == '__main__':
-    print("🚀 Servidor de notificaciones iniciado...")
+    print("Servidor de notificaciones iniciado...")
     hilo = threading.Thread(target=iniciar_scheduler)
     hilo.start()
     app.run(host="0.0.0.0", debug=True, port=PORT, use_reloader=False)

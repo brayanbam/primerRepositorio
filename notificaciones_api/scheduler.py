@@ -22,10 +22,10 @@ def verificar_y_enviar_notificaciones():
         tareas = data_tareas.get("tareas", []) if isinstance(data_tareas, dict) else []
 
     except requests.RequestException as e:
-        print("❌ Error al obtener datos de la API:", e)
+        print(" Error al obtener datos de la API:", e)
         return
     except ValueError as e:
-        print("❌ Error al decodificar JSON:", e)
+        print(" Error al decodificar JSON:", e)
         return
 
     for usuario in usuarios:
@@ -34,9 +34,9 @@ def verificar_y_enviar_notificaciones():
             continue
         for tarea in tareas:
             if tarea.get('usuario_id') == usuario.get('id') and not tarea.get('completada', False):
-                mensaje = f"📋 *Tarea pendiente:* {tarea.get('titulo')}\n📝 {tarea.get('descripcion','')}"
+                mensaje = f"*Tarea pendiente:* {tarea.get('titulo')}\n📝 {tarea.get('descripcion','')}"
                 enviar_mensaje(chat_id, mensaje)
-                print(f"✅ Notificación enviada al usuario {usuario.get('id')} - {tarea.get('titulo')}")
+                print(f" Notificación enviada al usuario {usuario.get('id')} - {tarea.get('titulo')}")
 
 def programar_notificaciones():
     if not scheduler.get_job('notificador_global'):
@@ -48,4 +48,4 @@ def programar_notificaciones():
             replace_existing=True
         )
         scheduler.start()
-        print("🕒 Scheduler activo y programado para cada minuto.")
+        print(" Scheduler activo y programado para cada minuto.")

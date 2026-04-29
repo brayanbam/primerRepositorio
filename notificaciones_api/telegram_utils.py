@@ -8,4 +8,4 @@ def enviar_mensaje(chat_id, texto):
         resp = requests.post(url, json=payload, timeout=5)
         resp.raise_for_status()
     except requests.RequestException as e:
-        print(f"❌ Error enviando mensaje a {chat_id}: {e}")
+        print(f" Error enviando mensaje a {chat_id}: {e}")
