@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  usuarios:
+    build: ./usuarios_api
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./usuarios_api:/app
+    env_file:
+      - .env
+
+  tareas:
+    build: ./tareas_api
+    ports:
+      - "5002:5002"
+    volumes:
+      - ./tareas_api:/app
+    depends_on:
+      - usuarios
+
+  notificaciones:
+    build: ./notificaciones_api
+    ports:
+      - "5003:5003"
+    depends_on:
+      - usuarios
+      - tareas
+
+  frontend:
+    build: ./poke-app
+    ports:
+      - "8080:80"
+    depends_on:
+      - usuarios
+      - tareas

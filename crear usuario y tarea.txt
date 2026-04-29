@@ -1,0 +1,15 @@
+{
+  "nombre": "Ronald",
+  "email": "ronald@unicomfacauca.edu.co",
+  "chat_id": "1460377057"
+}
+
+
+
+{
+  "usuario_id": 1,
+  "titulo": "Preparar exposición",
+  "descripcion": "Revisar diapositivas y practicar",
+  "intervalo_notificacion": 1
+}
+
