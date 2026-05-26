@@ -108,7 +108,10 @@ Cada microservicio se ejecuta en un contenedor independiente, lo que permite:
 1. Clonar el repositorio
 2. Ubicarse en la raíz del proyecto
 3. Ejecutar el sistema con Docker Compose:
+
+```python
 docker-compose up --build
+```
 
 ## Resultado
 
