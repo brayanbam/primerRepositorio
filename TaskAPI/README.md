@@ -11,7 +11,8 @@ Esto genera problemas como:
 Olvido de tareas importantes
 Falta de seguimiento de productividad
 Poca visibilidad del progreso personal o laboral
-Solución
+
+## Solución
 
 Se desarrolló TaskAPI, un sistema basado en microservicios que permite:
 
