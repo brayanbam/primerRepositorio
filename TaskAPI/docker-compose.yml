@@ -1,0 +1,53 @@
+services:
+
+  gateway:
+    build: ./gateway
+    ports:
+      - "5000:5000"
+    depends_on:
+      - usuarios
+      - tareas
+      - notificaciones
+      - analisis
+
+  usuarios:
+    build: ./usuarios_api
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./usuarios_api:/app
+    env_file:
+      - .env
+
+  tareas:
+    build: ./tareas_api
+    ports:
+      - "5002:5000"
+    volumes:
+      - ./tareas_api:/app
+    depends_on:
+      - usuarios
+
+  notificaciones:
+    build: ./notificaciones_api
+    ports:
+      - "5003:5000"
+    depends_on:
+      - usuarios
+      - tareas
+
+  analisis:
+    build: ./analisis_api
+    ports:
+      - "5004:5000"
+    volumes:
+      - ./analisis_api:/app
+    depends_on:
+      - tareas
+
+  frontend:
+    build: ./poke-app
+    ports:
+      - "8080:80"
+    depends_on:
+      - gateway
