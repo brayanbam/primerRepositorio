@@ -47,11 +47,11 @@ Además:
 
 ## Flujo de funcionamiento
 
-1* El usuario accede al sistema desde el frontend
-2* Se autentica mediante el servicio de usuarios (JWT)
-3* El frontend consume los servicios de tareas
-4* El servicio de notificaciones envía alertas a usuarios con tareas pendientes
-5* El servicio de análisis procesa datos del sistema y genera estadísticas
+1. El usuario accede al sistema desde el frontend
+2. Se autentica mediante el servicio de usuarios (JWT)
+3. El frontend consume los servicios de tareas
+4. El servicio de notificaciones envía alertas a usuarios con tareas pendientes
+5. El servicio de análisis procesa datos del sistema y genera estadísticas
 
 ## Funcionalidades del Sistema
 
@@ -105,9 +105,9 @@ Cada microservicio se ejecuta en un contenedor independiente, lo que permite:
 
 ## Ejecución del Proyecto
 
-1* Clonar el repositorio
-2* Ubicarse en la raíz del proyecto
-3* Ejecutar el sistema con Docker Compose:
+1. Clonar el repositorio
+2. Ubicarse en la raíz del proyecto
+3. Ejecutar el sistema con Docker Compose:
 docker-compose up --build
 
 ## Resultado
