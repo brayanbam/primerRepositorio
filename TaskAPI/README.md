@@ -8,9 +8,9 @@ En la actualidad, muchas personas gestionan sus tareas de forma manual o mediant
 
 Esto genera problemas como:
 
-Olvido de tareas importantes
-Falta de seguimiento de productividad
-Poca visibilidad del progreso personal o laboral
+* Olvido de tareas importantes
+* Falta de seguimiento de productividad
+* Poca visibilidad del progreso personal o laboral
 
 ## Solución
 
