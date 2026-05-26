@@ -2,7 +2,7 @@
 
 Este proyecto implementa un sistema distribuido basado en microservicios para la gestión de tareas personales y laborales, incluyendo autenticación, notificaciones automáticas y análisis de productividad.
 
-Problema
+## Problema
 
 En la actualidad, muchas personas gestionan sus tareas de forma manual o mediante aplicaciones básicas que no ofrecen análisis ni notificaciones inteligentes.
 
