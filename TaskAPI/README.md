@@ -21,7 +21,8 @@ Creación y administración de tareas
 Notificaciones automáticas mediante Telegram
 Generación de métricas y análisis del sistema
 Control de acceso basado en roles (admin / usuario)
-Descripción del Sistema
+
+## Descripción del Sistema
 
 El sistema está compuesto por los siguientes microservicios:
 
@@ -31,7 +32,8 @@ Servicio de Notificaciones: envío de recordatorios por Telegram
 Servicio de Análisis: generación de métricas, dashboard y productividad
 Frontend: interfaz de usuario para interactuar con el sistema
 API Gateway (si aplica): punto central de comunicación entre servicios
-Arquitectura
+
+## Arquitectura
 
 Cliente → Frontend → Gateway → Microservicios
 
@@ -42,13 +44,17 @@ Además:
 El frontend consume los servicios de usuarios y tareas
 El servicio de notificaciones consulta tareas y usuarios
 El servicio de análisis consume datos del servicio de tareas para generar métricas
-Flujo de funcionamiento
+
+## Flujo de funcionamiento
+
 El usuario accede al sistema desde el frontend
 Se autentica mediante el servicio de usuarios (JWT)
 El frontend consume los servicios de tareas
 El servicio de notificaciones envía alertas a usuarios con tareas pendientes
 El servicio de análisis procesa datos del sistema y genera estadísticas
-Funcionalidades del Sistema
+
+## Funcionalidades del Sistema
+
 Registro de usuarios
 Inicio de sesión con JWT
 Gestión de roles (admin / usuario)
@@ -59,7 +65,8 @@ Dashboard administrativo
 Análisis de productividad por usuario
 Estadísticas generales del sistema
 Comunicación entre microservicios vía API REST
-Servicio de Análisis
+
+## Servicio de Análisis
 
 El servicio de análisis es responsable de:
 
@@ -74,7 +81,9 @@ Endpoints principales:
 /productividad → productividad por usuario
 /completadas → tareas completadas
 /estadisticas → resumen del sistema
-Tecnologías Utilizadas
+
+## Tecnologías Utilizadas
+
 Python
 Flask
 Node.js (Frontend)
@@ -84,7 +93,8 @@ Docker Compose
 SQLite
 JWT (Autenticación)
 Telegram Bot API
-Contenerización
+
+## Contenerización
 
 Cada microservicio se ejecuta en un contenedor independiente, lo que permite:
 
@@ -92,11 +102,14 @@ Aislamiento de servicios
 Escalabilidad
 Facilidad de despliegue
 Comunicación interna mediante red Docker
-Ejecución del Proyecto
+
+## Ejecución del Proyecto
+
 Clonar el repositorio
 Ubicarse en la raíz del proyecto
 Ejecutar el sistema con Docker Compose:
 docker-compose up --build
-Resultado
+
+## Resultado
 
 El sistema permite gestionar tareas de forma eficiente, recibir notificaciones automáticas y visualizar métricas de productividad en tiempo real, todo bajo una arquitectura de microservicios distribuida.
