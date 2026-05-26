@@ -16,22 +16,22 @@ Esto genera problemas como:
 
 Se desarrolló TaskAPI, un sistema basado en microservicios que permite:
 
-Gestión de usuarios y autenticación segura
-Creación y administración de tareas
-Notificaciones automáticas mediante Telegram
-Generación de métricas y análisis del sistema
-Control de acceso basado en roles (admin / usuario)
+* Gestión de usuarios y autenticación segura
+* Creación y administración de tareas
+* Notificaciones automáticas mediante Telegram
+* Generación de métricas y análisis del sistema
+* Control de acceso basado en roles (admin / usuario)
 
 ## Descripción del Sistema
 
 El sistema está compuesto por los siguientes microservicios:
 
-Servicio de Usuarios: registro, login y gestión de roles con JWT
-Servicio de Tareas: creación, consulta y actualización de tareas
-Servicio de Notificaciones: envío de recordatorios por Telegram
-Servicio de Análisis: generación de métricas, dashboard y productividad
-Frontend: interfaz de usuario para interactuar con el sistema
-API Gateway (si aplica): punto central de comunicación entre servicios
+* Servicio de Usuarios: registro, login y gestión de roles con JWT
+* Servicio de Tareas: creación, consulta y actualización de tareas
+* Servicio de Notificaciones: envío de recordatorios por Telegram
+* Servicio de Análisis: generación de métricas, dashboard y productividad
+* Frontend: interfaz de usuario para interactuar con el sistema
+* API Gateway (si aplica): punto central de comunicación entre servicios
 
 ## Arquitectura
 
@@ -41,73 +41,73 @@ Los microservicios se comunican mediante solicitudes HTTP REST dentro de una red
 
 Además:
 
-El frontend consume los servicios de usuarios y tareas
-El servicio de notificaciones consulta tareas y usuarios
-El servicio de análisis consume datos del servicio de tareas para generar métricas
+* El frontend consume los servicios de usuarios y tareas
+* El servicio de notificaciones consulta tareas y usuarios
+* El servicio de análisis consume datos del servicio de tareas para generar métricas
 
 ## Flujo de funcionamiento
 
-El usuario accede al sistema desde el frontend
-Se autentica mediante el servicio de usuarios (JWT)
-El frontend consume los servicios de tareas
-El servicio de notificaciones envía alertas a usuarios con tareas pendientes
-El servicio de análisis procesa datos del sistema y genera estadísticas
+1* El usuario accede al sistema desde el frontend
+2* Se autentica mediante el servicio de usuarios (JWT)
+3* El frontend consume los servicios de tareas
+4* El servicio de notificaciones envía alertas a usuarios con tareas pendientes
+5* El servicio de análisis procesa datos del sistema y genera estadísticas
 
 ## Funcionalidades del Sistema
 
-Registro de usuarios
-Inicio de sesión con JWT
-Gestión de roles (admin / usuario)
-Creación y gestión de tareas
-Marcado de tareas como completadas
-Notificaciones automáticas por Telegram
-Dashboard administrativo
-Análisis de productividad por usuario
-Estadísticas generales del sistema
-Comunicación entre microservicios vía API REST
+* Registro de usuarios
+* Inicio de sesión con JWT
+* Gestión de roles (admin / usuario)
+* Creación y gestión de tareas
+* Marcado de tareas como completadas
+* Notificaciones automáticas por Telegram
+* Dashboard administrativo
+* Análisis de productividad por usuario
+* Estadísticas generales del sistema
+* Comunicación entre microservicios vía API REST
 
 ## Servicio de Análisis
 
 El servicio de análisis es responsable de:
 
-Generar métricas generales del sistema
-Calcular productividad por usuario
-Obtener tareas completadas y pendientes
-Proveer un dashboard administrativo
+* Generar métricas generales del sistema
+* Calcular productividad por usuario
+* Obtener tareas completadas y pendientes
+* Proveer un dashboard administrativo
 
 Endpoints principales:
 
-/dashboard → métricas generales
-/productividad → productividad por usuario
-/completadas → tareas completadas
-/estadisticas → resumen del sistema
+* /dashboard → métricas generales
+* /productividad → productividad por usuario
+* /completadas → tareas completadas
+* /estadisticas → resumen del sistema
 
 ## Tecnologías Utilizadas
 
-Python
-Flask
-Node.js (Frontend)
-Nginx
-Docker
-Docker Compose
-SQLite
-JWT (Autenticación)
-Telegram Bot API
+* Python
+* Flask
+* Node.js (Frontend)
+* Nginx
+* Docker
+* Docker Compose
+* SQLite
+* JWT (Autenticación)
+* Telegram Bot API
 
 ## Contenerización
 
 Cada microservicio se ejecuta en un contenedor independiente, lo que permite:
 
-Aislamiento de servicios
-Escalabilidad
-Facilidad de despliegue
-Comunicación interna mediante red Docker
+* Aislamiento de servicios
+* Escalabilidad
+* Facilidad de despliegue
+* Comunicación interna mediante red Docker
 
 ## Ejecución del Proyecto
 
-Clonar el repositorio
-Ubicarse en la raíz del proyecto
-Ejecutar el sistema con Docker Compose:
+1* Clonar el repositorio
+2* Ubicarse en la raíz del proyecto
+3* Ejecutar el sistema con Docker Compose:
 docker-compose up --build
 
 ## Resultado
